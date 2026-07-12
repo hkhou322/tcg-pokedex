@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 🔧 CUSTOMIZE: change the title shown in the browser tab -->
+  <title>Your Name — Personal Page</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <!-- 🔧 CUSTOMIZE: your name and tagline -->
+    <header>
+      <h1>Your Name</h1>
+      <p class="tagline">Short tagline about you — e.g. "Software engineer & lifelong learner"</p>
+    </header>
+
+    <!-- 🔧 CUSTOMIZE: a short bio / intro -->
+    <section class="about">
+      <p>
+        Write a sentence or two about yourself here. This is a placeholder —
+        replace it with who you are, what you work on, or what you're interested in.
+      </p>
+    </section>
+
+    <!-- 🔧 CUSTOMIZE: your links -->
+    <section class="links">
+      <ul>
+        <li><a href="https://github.com/hkhou322" target="_blank" rel="noopener">GitHub</a></li>
+        <!--
+          Add more links as needed, e.g.:
+          <li><a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="mailto:you@example.com">Email</a></li>
+          <li><a href="https://twitter.com/your-handle" target="_blank" rel="noopener">Twitter</a></li>
+        -->
+      </ul>
+    </section>
+
+    <footer>
+      <!-- 🔧 CUSTOMIZE: footer text -->
+      <p>© <span id="year"></span> Your Name</p>
+    </footer>
+  </main>
+
+  <script>
+    // Auto-updates the year in the footer so you never have to touch it.
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
