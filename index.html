@@ -3,48 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- 🔧 CUSTOMIZE: change the title shown in the browser tab -->
-  <title>Your Name — Personal Page</title>
+  <title>TCG Pokédex</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="container">
-    <!-- 🔧 CUSTOMIZE: your name and tagline -->
-    <header>
-      <h1>Your Name</h1>
-      <p class="tagline">Short tagline about you — e.g. "Software engineer & lifelong learner"</p>
-    </header>
+  <header class="site-header">
+    <div class="brand">
+      <span class="ball" aria-hidden="true"></span>
+      <h1>TCG Pokédex</h1>
+    </div>
+    <p class="tagline">Search &amp; browse every Pokémon Trading Card Game card</p>
+  </header>
 
-    <!-- 🔧 CUSTOMIZE: a short bio / intro -->
-    <section class="about">
-      <p>
-        Write a sentence or two about yourself here. This is a placeholder —
-        replace it with who you are, what you work on, or what you're interested in.
-      </p>
-    </section>
+  <section class="toolbar" aria-label="Search and filters">
+    <input
+      type="search"
+      id="search"
+      class="search"
+      placeholder="Search by name (e.g. Pikachu)…"
+      autocomplete="off"
+      aria-label="Search cards by name"
+    />
+    <label class="field">
+      <span>Type</span>
+      <select id="type-filter" aria-label="Filter by type">
+        <option value="">All types</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Set</span>
+      <select id="set-filter" aria-label="Filter by set">
+        <option value="">All sets</option>
+      </select>
+    </label>
+    <span id="result-count" class="result-count" role="status" aria-live="polite"></span>
+  </section>
 
-    <!-- 🔧 CUSTOMIZE: your links -->
-    <section class="links">
-      <ul>
-        <li><a href="https://github.com/hkhou322" target="_blank" rel="noopener">GitHub</a></li>
-        <!--
-          Add more links as needed, e.g.:
-          <li><a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href="mailto:you@example.com">Email</a></li>
-          <li><a href="https://twitter.com/your-handle" target="_blank" rel="noopener">Twitter</a></li>
-        -->
-      </ul>
-    </section>
+  <main id="card-grid" class="card-grid" aria-live="polite"></main>
 
-    <footer>
-      <!-- 🔧 CUSTOMIZE: footer text -->
-      <p>© <span id="year"></span> Your Name</p>
-    </footer>
-  </main>
+  <div class="more-wrap">
+    <button id="load-more" class="load-more" type="button" hidden>Load more</button>
+  </div>
 
-  <script>
-    // Auto-updates the year in the footer so you never have to touch it.
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <div id="card-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" type="button" aria-label="Close" data-close="1">×</button>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Data from the <a href="https://pokemontcg.io" target="_blank" rel="noopener">Pokémon TCG API</a>. Not affiliated with The Pokémon Company.</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>

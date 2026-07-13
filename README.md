@@ -1,48 +1,55 @@
-# hkhou322.github.io
+# TCG Pokédex
 
-Personal GitHub Pages website for [@hkhou322](https://github.com/hkhou322).
+A live, searchable **Pokémon Trading Card Game** browser, served as a static site
+on GitHub Pages at:
 
-## What this is
+**https://hkhou322.github.io/tcg-pokedex/**
 
-A minimal, single-page personal site served for free by GitHub Pages at:
+It pulls card data in real time from the free [Pokémon TCG API](https://pokemontcg.io)
+(`api.pokemontcg.io/v2`) — no backend, no build step, no database.
 
-**https://hkhou322.github.io**
+## Features
 
-## Customizing
+- **Search** cards by name (live, debounced, wildcard match).
+- **Filter** by Pokémon type (Fire, Water, Psychic, …) and by set (newest first).
+- **Card grid** with artwork, HP, type badges, and set info.
+- **Detail modal** on click: large image, attacks/abilities with energy cost & damage,
+  weaknesses/resistances/retreat cost, rarity, and flavor text.
+- **Load more** pagination; keyboard `Esc` closes the modal; responsive layout.
 
-Everything lives in two files:
+## Files
 
-- `index.html` — content (name, bio, links). Look for the `🔧 CUSTOMIZE` comments.
-- `styles.css` — look & feel. Edit the `:root` variables (colors, width) up top.
+- `index.html` — page structure (toolbar, grid, modal).
+- `styles.css` — dark Pokéball-red theme, responsive grid & modal.
+- `app.js` — fetches from the API, handles search/filters/pagination/modal.
 
-After editing, commit and push to the `main` branch:
+## Local development
+
+It's plain static files, so any static server works:
 
 ```bash
-git add .
-git commit -m "Update site content"
-git push
+cd tcg-pokedex
+python -m http.server 8000
+# open http://localhost:8000
 ```
 
-Changes appear at https://hkhou322.github.io within a minute or two.
+> The `pokemontcg.io` API sends `Access-Control-Allow-Origin: *`, so it works
+> straight from `file://` or `localhost` — no proxy needed.
 
-## Publishing setup (one-time)
+## Deploy
 
-This repo must be named exactly `hkhou322.github.io` and live under the
-`hkhou322` account for the free `*.github.io` URL to work.
+The repo is `hkhou322/tcg-pokedex`. Push to `main` and GitHub Pages (source:
+`main` / root) serves it at the URL above within ~1–2 minutes.
 
-1. Create the repo at https://github.com/new — name it `hkhou322.github.io`,
-   set it **Public**, and you can leave it empty (don't add a README).
-2. Enable Pages: repo **Settings → Pages → Source: Deploy from a branch →
-   `main` / `(root)` → Save**.
-3. Push these files:
-   ```bash
-   cd hkhou322.github.io
-   git init
-   git add .
-   git commit -m "Initial personal site"
-   git branch -M main
-   git remote add origin https://github.com/hkhou322/hkhou322.github.io.git
-   git push -u origin main
-   ```
+```bash
+git add index.html styles.css app.js README.md
+git commit -m "Update TCG Pokédex"
+git push origin main
+```
 
-Done. Your site is live at https://hkhou322.github.io
+## Notes
+
+- Without an API key, requests are anonymous and subject to rate limits. The UI
+  degrades gracefully (skeleton loaders + an error/retry state) if a request fails.
+- The set dropdown loads the 60 most recent sets for a usable list; the name
+  search/filter covers the whole catalogue.
