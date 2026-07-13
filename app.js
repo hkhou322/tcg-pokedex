@@ -109,7 +109,7 @@
   }
 
   function fetchCards(reset) {
-    if (state.loading) return;
+    if (state.loading && !reset) return; // a new search must interrupt an in-flight load
     state.loading = true;
     updateLoadMore(); // shows "Loading…" + disables button during the (slow) fetch
     if (reset) showSkeletons();
