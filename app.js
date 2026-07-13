@@ -3,7 +3,7 @@
   "use strict";
 
   var API = "https://api.pokemontcg.io/v2";
-  var PAGE_SIZE = 24;
+  var PAGE_SIZE = 10;
 
   var state = {
     page: 1,
@@ -102,7 +102,7 @@
   function reload() {
     state.page = 1;
     state.cards = [];
-    el.grid.innerHTML = "";
+    el.grid.innerHTML = '<div class="state">Loading cards…</div>';
     fetchCards(true);
   }
 
