@@ -35,10 +35,16 @@
     el.modal = document.getElementById("card-modal");
     el.modalBody = document.getElementById("modal-body");
 
-    el.search.addEventListener("input", debounce(function () {
+    var runDebouncedSearch = debounce(function () {
+      fetchCards(true);
+    }, 350);
+    el.search.addEventListener("input", function () {
+      // Invalidate the old query immediately. Waiting for the debounce allowed a
+      // partial query (for example P*) to render under the final Psyduck text.
       state.search = el.search.value.trim();
-      reload();
-    }, 350));
+      prepareReload("Searching…");
+      runDebouncedSearch();
+    });
     el.typeFilter.addEventListener("change", function () {
       state.type = el.typeFilter.value;
       reload();
@@ -101,10 +107,26 @@
     return o;
   }
 
-  function reload() {
+  function cancelActiveRequest() {
+    reqId += 1; // invalidates success/error/finally handlers synchronously
+    if (state.controller) state.controller.abort();
+    state.controller = null;
+    state.loading = false;
+  }
+
+  function prepareReload(message) {
+    cancelActiveRequest();
     state.page = 1;
     state.cards = [];
-    el.grid.innerHTML = '<div class="state">Loading cards…</div>';
+    state.totalCount = null;
+    state.hasMore = false;
+    el.count.textContent = message || "";
+    el.grid.innerHTML = '<div class="state">' + (message || "Loading cards…") + "</div>";
+    updateLoadMore();
+  }
+
+  function reload() {
+    prepareReload("Loading cards…");
     fetchCards(true);
   }
 
@@ -156,7 +178,8 @@
         }
       })
       .then(function () {
-        if (myId === reqId) state.loading = false;
+        if (myId !== reqId) return; // stale requests must not mutate any UI
+        state.loading = false;
         hideSkeletons();
         updateLoadMore();
       });
