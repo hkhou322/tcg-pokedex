@@ -241,6 +241,11 @@ h1 {
   transform: translateY(-1px); box-shadow: 0 8px 24px rgba(238,21,21,.35);
 }
 .load-more:active { transform: translateY(0); }
+.load-more:disabled {
+  opacity: .6; cursor: progress; background: var(--panel);
+  border-color: var(--border); color: var(--fg-dim);
+  box-shadow: none; transform: none;
+}
 
 /* ---------- Modal ---------- */
 .modal {

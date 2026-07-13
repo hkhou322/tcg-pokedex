@@ -111,6 +111,7 @@
   function fetchCards(reset) {
     if (state.loading) return;
     state.loading = true;
+    updateLoadMore(); // shows "Loading…" + disables button during the (slow) fetch
     if (reset) showSkeletons();
 
     var myId = ++reqId; // only the newest request may mutate the grid
@@ -146,11 +147,18 @@
       .catch(function (err) {
         if (err && err.name === "AbortError") return;
         if (myId !== reqId) return; // ignore errors from a stale request
-        if (state.page === 1) showError(err && err.message ? err.message : "Failed to load cards.");
+        if (state.page === 1) {
+          showError(err && err.message ? err.message : "Failed to load cards.");
+        } else {
+          // Non-destructive: keep existing cards, let the user retry the next page.
+          state.loading = false;
+          updateLoadMore();
+        }
       })
       .then(function () {
         if (myId === reqId) state.loading = false;
         hideSkeletons();
+        updateLoadMore();
       });
   }
 
@@ -290,7 +298,16 @@
   }
 
   function updateLoadMore() {
-    el.loadMore.hidden = !state.hasMore;
+    if (!el.loadMore) return;
+    if (state.loading) {
+      el.loadMore.disabled = true;
+      el.loadMore.textContent = "Loading…";
+      el.loadMore.hidden = false;
+    } else {
+      el.loadMore.textContent = state.hasMore ? "Load more" : "No more cards";
+      el.loadMore.disabled = !state.hasMore;
+      el.loadMore.hidden = !state.hasMore;
+    }
   }
 
   function showError(msg) {
