@@ -185,7 +185,7 @@
     }).join("");
     var hp = card.hp ? '<span class="chip hp">HP ' + escapeHtml(card.hp) + "</span>" : "";
     var setName = (card.set && card.set.name) ? card.set.name : "";
-    var num = (card.set && card.set.number) ? " #" + card.set.number : "";
+    var num = card.number ? " #" + card.number : "";
 
     div.innerHTML =
       '<div class="card-img">' +
@@ -245,7 +245,7 @@
       "</div>" +
       '<div class="modal-info">' +
         "<h2 id=\"modal-title\">" + escapeHtml(card.name) + "</h2>" +
-        '<div class="modal-sub">' + escapeHtml(setName) + escapeHtml(series) + "</div>" +
+        '<div class="modal-sub">' + escapeHtml(setName) + escapeHtml(series) + (card.number ? escapeHtml(" #" + card.number) : "") + "</div>" +
         '<div class="modal-attrs">' + hp + types + rarity + "</div>" +
         (abilities ? '<div class="modal-section"><h3>Abilities</h3>' + abilities + "</div>" : "") +
         (attacks ? '<div class="modal-section"><h3>Attacks</h3>' + attacks + "</div>" : "") +
