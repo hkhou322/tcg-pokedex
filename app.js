@@ -178,10 +178,11 @@
 
   function cardElement(card) {
     var div = document.createElement("div");
-    div.className = "card";
+    var typeClass = (card.types || []).map(function (t) { return "type-" + t.toLowerCase(); }).join(" ");
+    div.className = "card" + (typeClass ? " " + typeClass : "");
     var img = (card.images && card.images.small) || "";
     var types = (card.types || []).map(function (t) {
-      return '<span class="chip t">' + escapeHtml(t) + "</span>";
+      return '<span class="chip t type-' + t.toLowerCase() + '">' + escapeHtml(t) + "</span>";
     }).join("");
     var hp = card.hp ? '<span class="chip hp">HP ' + escapeHtml(card.hp) + "</span>" : "";
     var setName = (card.set && card.set.name) ? card.set.name : "";
@@ -207,7 +208,7 @@
   function openModal(card) {
     var img = (card.images && (card.images.large || card.images.small)) || "";
     var types = (card.types || []).map(function (t) {
-      return '<span class="chip t">' + escapeHtml(t) + "</span>";
+      return '<span class="chip t type-' + t.toLowerCase() + '">' + escapeHtml(t) + "</span>";
     }).join("");
     var hp = card.hp ? '<span class="chip hp">HP ' + escapeHtml(card.hp) + "</span>" : "";
     var rarity = card.rarity ? '<span class="chip">' + escapeHtml(card.rarity) + "</span>" : "";
