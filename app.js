@@ -3,7 +3,9 @@
   "use strict";
 
   var API = "https://api.pokemontcg.io/v2";
+  var API_KEY = (((document.querySelector('meta[name="poketcg-api-key"]') || {}).content) || "").trim();
   var PAGE_SIZE = 10;
+  var reqId = 0; // guards against out-of-order responses (typing race)
 
   var state = {
     page: 1,
@@ -15,7 +17,8 @@
     totalCount: null,
     loading: false,
     hasMore: false,
-    controller: null
+    controller: null,
+    filtersLoaded: false
   };
 
   var el = {};
@@ -53,7 +56,6 @@
       if (e.key === "Escape") closeModal();
     });
 
-    loadFilters();
     reload();
   }
 
@@ -111,6 +113,8 @@
     state.loading = true;
     if (reset) showSkeletons();
 
+    var myId = ++reqId; // only the newest request may mutate the grid
+
     if (state.controller) state.controller.abort();
     state.controller = new AbortController();
 
@@ -122,6 +126,7 @@
 
     fetchJSON(API + "/cards?" + params.toString(), state.controller.signal)
       .then(function (data) {
+        if (myId !== reqId) return; // a newer query superseded this one
         var cards = data.data || [];
         if (state.page === 1) state.cards = [];
         state.cards = state.cards.concat(cards);
@@ -131,19 +136,28 @@
         render(cards, state.page === 2);
         updateCount();
         updateLoadMore();
+        // Populate the type/set filters only after the first batch returns,
+        // so the initial /cards request isn't throttled by /types + /sets.
+        if (!state.filtersLoaded) {
+          state.filtersLoaded = true;
+          loadFilters();
+        }
       })
       .catch(function (err) {
         if (err && err.name === "AbortError") return;
+        if (myId !== reqId) return; // ignore errors from a stale request
         if (state.page === 1) showError(err && err.message ? err.message : "Failed to load cards.");
       })
       .then(function () {
-        state.loading = false;
+        if (myId === reqId) state.loading = false;
         hideSkeletons();
       });
   }
 
   function fetchJSON(url, signal) {
-    var opts = signal ? { signal: signal } : {};
+    var opts = { headers: {} };
+    if (API_KEY) opts.headers["X-Api-Key"] = API_KEY;
+    if (signal) opts.signal = signal;
     return fetch(url, opts).then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();
