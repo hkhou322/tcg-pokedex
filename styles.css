@@ -203,17 +203,30 @@ h1 {
 }
 
 /* ---------- Per-type colors (matched by JS: type-<lowercased api type>) ---------- */
-.type-fire      { --accent:#f08030; background: rgba(240,128,48,.18);  color:#ffb27a; border-color: rgba(240,128,48,.30); }
-.type-water     { --accent:#6890f0; background: rgba(104,144,240,.18); color:#a7c1ff; border-color: rgba(104,144,240,.30); }
-.type-grass     { --accent:#78c850; background: rgba(120,200,80,.18);  color:#aee08a; border-color: rgba(120,200,80,.30); }
-.type-lightning { --accent:#f8d030; background: rgba(248,208,48,.18);  color:#ffe680; border-color: rgba(248,208,48,.30); }
-.type-psychic   { --accent:#f85888; background: rgba(248,88,136,.18);  color:#ff9ec0; border-color: rgba(248,88,136,.30); }
-.type-fighting  { --accent:#c03028; background: rgba(192,48,40,.20);   color:#ff8e86; border-color: rgba(192,48,40,.30); }
-.type-darkness  { --accent:#705848; background: rgba(112,88,72,.30);   color:#c9b3a3; border-color: rgba(112,88,72,.40); }
-.type-metal     { --accent:#b8b8d0; background: rgba(184,184,208,.18); color:#dcdcf0; border-color: rgba(184,184,208,.30); }
-.type-dragon    { --accent:#7038f8; background: rgba(112,56,248,.18);  color:#c2a3ff; border-color: rgba(112,56,248,.30); }
-.type-fairy     { --accent:#ee99ac; background: rgba(238,153,172,.18); color:#ffc6d4; border-color: rgba(238,153,172,.30); }
-.type-colorless { --accent:#a8a878; background: rgba(168,168,120,.16); color:#d6d3a8; border-color: rgba(168,168,120,.28); }
+/* Per-type: --accent drives the card's top strip + hover glow (bare class, no visual fill
+   so the card keeps its dark gradient). Visual fills are scoped to the chip only. */
+.type-fire      { --accent:#f08030; }
+.type-water     { --accent:#6890f0; }
+.type-grass     { --accent:#78c850; }
+.type-lightning { --accent:#f8d030; }
+.type-psychic   { --accent:#f85888; }
+.type-fighting  { --accent:#c03028; }
+.type-darkness  { --accent:#705848; }
+.type-metal     { --accent:#b8b8d0; }
+.type-dragon    { --accent:#7038f8; }
+.type-fairy     { --accent:#ee99ac; }
+.type-colorless { --accent:#a8a878; }
+.chip.t.type-fire      { background: rgba(240,128,48,.18);  color:#ffb27a; border-color: rgba(240,128,48,.30); }
+.chip.t.type-water     { background: rgba(104,144,240,.18); color:#a7c1ff; border-color: rgba(104,144,240,.30); }
+.chip.t.type-grass     { background: rgba(120,200,80,.18);  color:#aee08a; border-color: rgba(120,200,80,.30); }
+.chip.t.type-lightning { background: rgba(248,208,48,.18);  color:#ffe680; border-color: rgba(248,208,48,.30); }
+.chip.t.type-psychic   { background: rgba(248,88,136,.18);  color:#ff9ec0; border-color: rgba(248,88,136,.30); }
+.chip.t.type-fighting  { background: rgba(192,48,40,.20);   color:#ff8e86; border-color: rgba(192,48,40,.30); }
+.chip.t.type-darkness  { background: rgba(112,88,72,.30);   color:#c9b3a3; border-color: rgba(112,88,72,.40); }
+.chip.t.type-metal     { background: rgba(184,184,208,.18); color:#dcdcf0; border-color: rgba(184,184,208,.30); }
+.chip.t.type-dragon    { background: rgba(112,56,248,.18);  color:#c2a3ff; border-color: rgba(112,56,248,.30); }
+.chip.t.type-fairy     { background: rgba(238,153,172,.18); color:#ffc6d4; border-color: rgba(238,153,172,.30); }
+.chip.t.type-colorless { background: rgba(168,168,120,.16); color:#d6d3a8; border-color: rgba(168,168,120,.28); }
 
 /* ---------- Load more ---------- */
 .more-wrap { display: flex; justify-content: center; padding: 14px 24px 30px; }
